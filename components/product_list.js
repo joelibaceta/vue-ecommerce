@@ -5,6 +5,7 @@ Vue.component('product-list', {
       loading: true,
       token: localStorage.getItem('token'),
       search: '',
+      category: '',
     }
   },
   created: function () {
@@ -42,23 +43,7 @@ Vue.component('product-list', {
         </div>
       </div>
       <hr/>
-      <ul class="nav nav-pills nav-fill">
-        <li class="nav-item">
-          <a class="nav-link active sm" aria-current="page" href="#">Alimentos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Tecnologia</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Ropa</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Farmacia</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Belleza</a>
-        </li>
-      </ul>
+      <category-list></category-list>
       <hr/>
       <div class="row">
         <div class="col-12">
