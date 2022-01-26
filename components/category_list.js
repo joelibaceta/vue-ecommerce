@@ -1,47 +1,55 @@
-Vue.component('category-list', {
-  data: function () {
-    return { 
-      categories: [],
-      loading: true,
-      token: localStorage.getItem('token'),
-      current_category: '',
-    }
-  },
-  mounted: function () {
-    self = this;
-    fetch('http://silabuz-api-project.herokuapp.com/products/categories/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + this.token
+Vue.component("categories-list", {
+  data: function() {
+      return {
+          categories: [],
+          isLoading: true,
+          token: localStorage.getItem("token"),
+          currentCategory: ''
       }
-    })
-    .then(function (response) {
-      return response.json();
-      console.log("response");
-    })
-    .then(function (data) {
-      console.log(data);
-      self.loading = false;
-      self.categories = data;
-    })
-    .catch(function (error) {
-      console.log('Request failed', error);
-    })
-
+  },
+  created: function() {
+      var self=this
+      fetch("http://silabuz-api-project.herokuapp.com/products/categories/", {
+          method: "GET",
+          header: {
+              "Content-Type": "application/json",
+              "Authorization": "Token " + this.token
+          }
+      })
+      .then(function(response){
+          return response.json()
+      })
+      .then(function(data){
+          self.categories = data;
+          self.isLoading = false;
+      })
+      .catch(function(error) {
+          console.log("Error: ", error)
+      })
+  },
+  methods: {
+      onCategorySelect: function(pk){
+          this.currentCategory = pk
+          this.$emit("category-changed", pk)
+      }
   },
   template: `
-    <div v-if="loading">
-      <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+  <div class="row">
+      <div class="col-12">
+          <div v-if="isLoading">
+              <div class="spinner-border text-primary">
+                  <span class="sr-only"> Cargando ... </span>
+              </div>
+          </div>
+          <ul class="nav nav-pills nav-fill" v-else>
+              <category-item 
+                  v-for="category in categories"
+                  v-bind:category="category"
+                  v-bind:currentCategory="currentCategory"
+                  v-on:on-category-select="onCategorySelect">
+              </category-item>
+          </ul>
       </div>
-    </div>
-    <div v-else>
-
-      <ul class="nav nav-pills nav-fill">
-        <category-item v-for="category in categories" :category="category" :current_category="current_category"></category-item>
-      </ul>
-    </div>
+  </div>
   `
-
 })

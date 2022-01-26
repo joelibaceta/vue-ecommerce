@@ -1,60 +1,49 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"/>
-    <meta http-equiv=”Content-Type” content=”text/html; charset=UTF-8″ />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <div id="app">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">eCommerce</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <br/>
-      <div  class="container-fluid">
-        <div v-if="logged">
-          <product-list></product-list>
-        </div>
-        <div v-else>
-          <div class="row">
-            <div class="col-md-12">
-              <login-form v-on:on-login="onLogin"></login-form>
-            </div>
-          </div>
-          <!-- <div class="row">
-            <div class="col-md-12">
-              <small>¿Aún no tienes una cuenta? <a><b>REGISTRATE AHORA</b></a></small>
-            </div>
-          </div> -->
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"/>
+        <meta charset="UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"
+    </head>
+    <body>
+        <div id="app">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <span class="navbar-brand">eCommerce</span>
+                    <button class="navbar-toggler" 
+                        type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMenu">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item" v-if="logged">
+                                <a class="nav-link" v-on:click="DoLogout">Cerrar Sesion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="container-fluid">
+                <!-- <div v-if="logged"/>
+                    <product-list></product-list>
+                </div>
+                <div v-else>
+                    <login-form v-on:on-login="OnLogin"></login-form>
+                </div>-->
+
+                <router-view></router-view>
+            </div> 
 
         </div>
-        
-      </div>
-      
-    </div>
-    
+    </body>
+    <script src="components/signup.js"></script>
     <script src="components/category_item.js"></script>
     <script src="components/category_list.js"></script>
     <script src="components/product_item.js"></script>
     <script src="components/product_list.js"></script>
     <script src="components/login.js"></script>
     <script src="app.js"></script>
-  </body>
 </html>

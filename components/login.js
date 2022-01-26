@@ -1,47 +1,67 @@
-Vue.component('login-form', {
-  props: ['callback'],
-  data: function () {
-    return {
-      username: '',
-      password: ''
-    }
+Vue.component("login-form", {
+  data: function() {
+      return {
+          username: "",
+          password: "",
+          hasError: false
+      }
   },
   methods: {
-    "DoLogin": function () {
-      var self = this;
-      fetch('http://silabuz-api-project.herokuapp.com/authentication/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password
-        })
-      })
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-        self.$emit('on-login', data.token);
-      })
-      .catch(function (error) {
-        console.log('Request failed', error);
-      })
-    }
+      GoToSignUp: function() {
+          this.$router.push("/sign-up")
+      },
+      DoLogin: function() {
+          var self = this;
+          self.hasError = false
+          fetch("http://silabuz-api-project.herokuapp.com/authentication/login/", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                  username: this.username,
+                  password: this.password
+              })
+          })
+          .then(function(response){
+              return response.json()
+          })
+          .then(function(data){
+              console.log(data)
+              if (data.hasOwnProperty("token")) {
+                  //self.$emit("on-login", data.token)
+                  localStorage.setItem("token", data.token)
+                  self.$router.push("/product-list")
+              } else {
+                  self.hasError = true
+              }
+              
+          })
+          .catch(function(error) {
+              console.log("Error: ", error)
+          })
+      }
   },
   template: `
-    <form>
-      <div class="form-group">
-        <label for="username">Usuario</label>
-        <input type="text" class="form-control" id="username" v-model="username">
-      </div>
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input type="password" class="form-control" id="password" v-model="password">
-      </div>
-      <button type="submit" class="btn btn-primary col-12" @click.prevent="DoLogin">Iniciar Sesión</button>
-    </form>
-  `,
+      <form class="form">
+          <div class="alert alert-danger" v-if="hasError">
+              Credenciales no validas
+          </div>
+          <div class="form-group">
+              <label>Usuario</label>
+              <input class="form-control" type="text" v-model="username"></input>
+          </div>
+          <div class="form-group">
+              <label>Contraseña</label>
+              <input class="form-control" type="password" v-model="password"></input>
+          </div>
+          <button class="btn btn-primary col-12" @click.prevent="DoLogin" type="submit">
+              Iniciar Sesion
+          </button>
+          <br/><br/>
+          <button class="btn btn-success col-12" @click="GoToSignUp" type="button">
+              Registrarme
+          </button>
+      </form>
+  `
 })
